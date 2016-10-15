@@ -16,7 +16,7 @@ ChromeDebugSession.run(ChromeDebugSession.getSession(
     {
         adapter: ChromeDebugAdapter,
         extensionName: EXTENSION_NAME,
-        logFilePath: path.resolve(__dirname, '../../vscode-chrome-debug.txt'), // non-.txt file types can't be uploaded to github
+        logFilePath: path.resolve(__dirname, '../vscode-chrome-debug.txt'), // non-.txt file types can't be uploaded to github
         targetFilter,
 
         pathTransformer: UrlPathTransformer,
@@ -24,5 +24,5 @@ ChromeDebugSession.run(ChromeDebugSession.getSession(
     }));
 
 /* tslint:disable:no-var-requires */
-logger.log(EXTENSION_NAME + ': ' + require('../../package.json').version);
+logger.log(EXTENSION_NAME + ': ' + require('../package.json').version);
 /* tslint:enable:no-var-requires */

@@ -1,9 +1,9 @@
 {
-  "name": "debugger-for-chrome",
-  "displayName": "Debugger for Chrome",
+  "name": "debugger-for-krom",
+  "displayName": "Debugger for Krom",
   "version": "1.1.0",
   "icon": "images/icon.png",
-  "description": "Debug your JavaScript code in the Chrome browser, or any other target that supports the Chrome Debugger protocol.",
+  "description": "Debug your JavaScript code in Krom.",
   "author": {
     "name": "Microsoft Corporation"
   },
@@ -47,14 +47,20 @@
       { "language": "javascript" },
       { "language": "typescriptreact" },
       { "language": "javascriptreact" },
-      { "language": "fsharp" }
+      { "language": "fsharp" },
+      { "language": "haxe" }
     ],
     "debuggers": [
       {
-        "type": "chrome",
-        "label": "Chrome",
-        "program": "./out/src/chromeDebug.js",
+        "type": "krom",
+        "label": "Krom",
+        "program": "./out/chromeDebug.js",
         "runtime": "node",
+        "variables": {
+          "FindKha": "kha.findKha",
+          "FindFFMPEG": "kha.findFFMPEG",
+          "FindKrom": "krom.findKrom"
+        },
         "initialConfigurations": [
           {
             "name": "Launch Chrome against localhost, with sourcemaps",

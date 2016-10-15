@@ -8,10 +8,20 @@ import {spawn, ChildProcess} from 'child_process';
 import {ILaunchRequestArgs, IAttachRequestArgs} from './chromeDebugInterfaces';
 import * as utils from './utils';
 
+import * as path from 'path';
+
 const DefaultWebsourceMapPathOverrides: ISourceMapPathOverrides = {
     'webpack:///*': '${webRoot}/*',
     'meteor://💻app/*': '${webRoot}/*',
 };
+
+function osDir(): string {
+    return 'win32';
+}
+
+function osExt(): string {
+    return '.exe';
+}
 
 export class ChromeDebugAdapter extends CoreDebugAdapter {
     private _chromeProc: ChildProcess;
@@ -19,50 +29,31 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
     public launch(args: ILaunchRequestArgs): Promise<void> {
         args.sourceMapPathOverrides = args.sourceMapPathOverrides || DefaultWebsourceMapPathOverrides;
         return super.launch(args).then(() => {
+            logger.log('Using Kha from ' + args.kha + '\n');
             // Check exists?
-            const chromePath = args.runtimeExecutable || utils.getBrowserPath();
-            if (!chromePath) {
-                return coreUtils.errP(`Can't find Chrome - install it or set the "runtimeExecutable" field in the launch config.`);
+            const kromPath = path.join(args.krom, osDir(), 'Krom' + osExt());
+            if (!kromPath) {
+                return coreUtils.errP(`Can't find Krom.`);
             }
 
             // Start with remote debugging enabled
             const port = args.port || 9222;
-            const chromeArgs: string[] = ['--remote-debugging-port=' + port];
+            const kromArgs: string[] = [path.join(args.cwd, 'build', 'krom'), path.join(args.cwd, 'build', 'krom-resources')];
 
-            // Also start with extra stuff disabled
-            chromeArgs.push(...['--no-first-run', '--no-default-browser-check']);
-            if (args.runtimeArgs) {
-                chromeArgs.push(...args.runtimeArgs);
-            }
-
-            if (args.userDataDir) {
-                chromeArgs.push('--user-data-dir=' + args.userDataDir);
-            }
-
-            let launchUrl: string;
-            if (args.file) {
-                launchUrl = coreUtils.pathToFileURL(args.file);
-            } else if (args.url) {
-                launchUrl = args.url;
-            }
-
-            if (launchUrl) {
-                chromeArgs.push(launchUrl);
-            }
-
-            logger.log(`spawn('${chromePath}', ${JSON.stringify(chromeArgs) })`);
-            this._chromeProc = spawn(chromePath, chromeArgs, {
+            logger.log(`spawn('${kromPath}', ${JSON.stringify(kromArgs) })`);
+            this._chromeProc = spawn(kromPath, kromArgs, {
                 detached: true,
                 stdio: ['ignore'],
+                cwd: path.join(args.krom, osDir())
             });
             this._chromeProc.unref();
             this._chromeProc.on('error', (err) => {
-                const errMsg = 'Chrome error: ' + err;
+                const errMsg = 'Krom error: ' + err;
                 logger.error(errMsg);
                 this.terminateSession(errMsg);
             });
 
-            return this.doAttach(port, launchUrl, args.address);
+            return this.doAttach(port, 'launchUrl', args.address);
         });
     }
 
