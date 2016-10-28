@@ -66,13 +66,13 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
                 watch: false
             };
 
-            require(path.join(args.kha, 'Tools/khamake/out/main.js')).run(options, {
+           /* require(path.join(args.kha, 'Tools/khamake/out/main.js')).run(options, {
                 info: message => {
                     //**this.fireEvent(new OutputEvent(message + '\n', 'stdout'));
                 }, error: message => {
                     //**this.fireEvent(new OutputEvent(message + '\n', 'stderr'));
                 }
-            }).then((value: string) => {
+            }).then((value: string) => {*/
                 // Check exists?
                 const kromPath = path.join(args.krom, osDir(), 'Krom' + osExt());
                 if (!kromPath) {
@@ -80,11 +80,11 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
                 }
 
                 // Start with remote debugging enabled
-                const port = args.port || 9222;
+                const port = args.port || 9224;
                 const kromArgs: string[] = [path.join(args.cwd, 'build', 'krom'), path.join(args.cwd, 'build', 'krom-resources')];
 
                 logger.log(`spawn('${kromPath}', ${JSON.stringify(kromArgs) })`);
-                this._chromeProc = spawn(kromPath, kromArgs, {
+                /*this._chromeProc = spawn(kromPath, kromArgs, {
                     detached: true,
                     stdio: ['ignore'],
                     cwd: path.join(args.krom, osDir())
@@ -94,12 +94,12 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
                     const errMsg = 'Krom error: ' + err;
                     logger.error(errMsg);
                     this.terminateSession(errMsg);
-                });
+                });*/
 
-                return new Promise<void>((resolve, rejevt) => {
+                /*return new Promise<void>((resolve, rejevt) => {
                     resolve();
-                });
-                //return this.doAttach(port, 'launchUrl', args.address);
+                });*/
+                return this.doAttach(port, 'http://krom', args.address);
             }, (reason) => {
                 return coreUtils.errP(`Launch canceled.`);
                 /*this.fireEvent(new OutputEvent('Launch canceled.\n', 'stderr'));
@@ -107,7 +107,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
                 this.fireEvent(new TerminatedEvent());
                 this.clearEverything();*/
             });
-        });
+       // });
     }
 
     public attach(args: IAttachRequestArgs): Promise<void> {
