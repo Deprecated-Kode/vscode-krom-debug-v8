@@ -68,7 +68,7 @@
       {
         "type": "krom",
         "label": "Krom",
-        "program": "./out/chromeDebug.js",
+        "program": "./out/src/chromeDebug.js",
         "runtime": "node",
         "variables": {
           "FindKha": "kha.findKha",

@@ -127,11 +127,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 
     protected doAttach(port: number, targetUrl?: string, address?: string, timeout?: number): Promise<void> {
         return super.doAttach(port, targetUrl, address, timeout).then(() => {
-            // Don't return this promise, a failure shouldn't fail attach
-            this.globalEvaluate({ expression: 'navigator.userAgent', silent: true })
-                .then(
-                    evalResponse => logger.log('Target userAgent: ' + evalResponse.result.value),
-                    err => logger.log('Getting userAgent failed: ' + err.message));
+
         });
     }
 
