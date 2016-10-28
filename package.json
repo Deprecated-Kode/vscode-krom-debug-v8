@@ -1,7 +1,7 @@
 {
   "name": "debugger-for-krom",
   "displayName": "Debugger for Krom",
-  "version": "1.1.0",
+  "version": "2.1.0",
   "icon": "images/icon.png",
   "description": "Debug your JavaScript code in Krom.",
   "author": {
@@ -19,17 +19,20 @@
   "categories": [
     "Debuggers"
   ],
+  "aiKey": "AIF-d9b70cd4-b9f9-4d70-929b-a071c400b217",
   "license": "SEE LICENSE IN LICENSE.txt",
   "dependencies": {
-    "vscode-chrome-debug-core": "2.0.2",
-    "vscode-debugadapter": "^1.12.0",
-    "vscode-debugprotocol": "^1.12.0"
+    "vscode-chrome-debug-core": "3.3.4",
+    "vscode-debugadapter": "^1.13.1",
+    "vscode-debugprotocol": "^1.13.0"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.32",
     "@types/mockery": "^1.4.29",
     "@types/node": "^6.0.41",
     "@types/source-map": "^0.1.27",
+    "chrome-remote-debug-protocol": "^1.2.20161007",
+    "gulp": "^3.9.1",
     "mocha": "^3.0.2",
     "mockery": "^1.7.0",
     "tslint": "^3.15.1",
@@ -40,15 +43,26 @@
     "test": "mocha -u tdd -c 'out/test/**/*.test.js'",
     "lint": "tslint -t verbose 'src/**/*.ts' 'test/**/*.ts'",
     "build": "tsc",
-    "watch": "tsc -w"
+    "watch": "tsc -w",
+    "vscode:prepublish": "gulp verify-no-linked-modules"
   },
   "contributes": {
     "breakpoints": [
-      { "language": "javascript" },
-      { "language": "typescriptreact" },
-      { "language": "javascriptreact" },
-      { "language": "fsharp" },
-      { "language": "haxe" }
+      {
+        "language": "javascript"
+      },
+      {
+        "language": "typescriptreact"
+      },
+      {
+        "language": "javascriptreact"
+      },
+      {
+        "language": "fsharp"
+      },
+      {
+        "language": "haxe"
+      }
     ],
     "debuggers": [
       {
@@ -148,6 +162,11 @@
                 "type": "object",
                 "description": "A set of mappings for rewriting the locations of source files from what the sourcemap says, to their locations on disk. See README for details.",
                 "default": {}
+              },
+              "smartStep": {
+                "type": "boolean",
+                "description": "Automatically step through generated code that cannot be mapped back to the original source.",
+                "default": true
               }
             }
           },
@@ -195,6 +214,11 @@
                 "type": "object",
                 "description": "A set of mappings for rewriting the locations of source files from what the sourcemap says, to their locations on disk. See README for details.",
                 "default": {}
+              },
+              "smartStep": {
+                "type": "boolean",
+                "description": "Automatically step through generated code that cannot be mapped back to the original source.",
+                "default": true
               }
             }
           }
