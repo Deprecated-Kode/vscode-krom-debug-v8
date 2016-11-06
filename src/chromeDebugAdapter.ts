@@ -127,7 +127,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 
     protected doAttach(port: number, targetUrl?: string, address?: string, timeout?: number): Promise<void> {
         return super.doAttach(port, targetUrl, address, timeout).then(() => {
-
+            //this.runScript();
         });
     }
 
@@ -148,5 +148,12 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
         }
 
         return super.disconnect();
+    }
+
+    public runScript(): void {
+        let promise = this.chrome.Runtime.compileScript({expression: 'let i = 4;\n while (true) {\n	let a = 3;\n	++a;\n	++i;\n }\n', sourceURL: 'test.js', persistScript: true, executionContextId: 1});
+        promise.then(response => {
+            this.chrome.Runtime.runScript({scriptId: response.scriptId, executionContextId: 1});
+        });
     }
 }
