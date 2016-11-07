@@ -39,7 +39,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
     public launch(args: ILaunchRequestArgs): Promise<void> {
         args.sourceMapPathOverrides = args.sourceMapPathOverrides || DefaultWebsourceMapPathOverrides;
         return super.launch(args).then(() => {
-            logger.log('Using Kha from ' + args.kha + '\n');
+            logger.log('Using Kha from ' + args.kha + '\n', true);
 
             let options = {
                 from: args.cwd,
@@ -76,13 +76,13 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
                 watch: false
             };
 
-           /* require(path.join(args.kha, 'Tools/khamake/out/main.js')).run(options, {
+            require(path.join(args.kha, 'Tools/khamake/out/main.js')).run(options, {
                 info: message => {
-                    //**this.fireEvent(new OutputEvent(message + '\n', 'stdout'));
+                    logger.log(message, true);
                 }, error: message => {
-                    //**this.fireEvent(new OutputEvent(message + '\n', 'stderr'));
+                    logger.error(message, true);
                 }
-            }).then((value: string) => {*/
+            }).then((value: string) => {
                 // Check exists?
                 const kromPath = path.join(args.krom, osDir(), 'Krom' + osExt());
                 if (!kromPath) {
@@ -94,7 +94,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
                 const kromArgs: string[] = [path.join(args.cwd, 'build', 'krom'), path.join(args.cwd, 'build', 'krom-resources')];
 
                 logger.log(`spawn('${kromPath}', ${JSON.stringify(kromArgs) })`);
-                /*this._chromeProc = spawn(kromPath, kromArgs, {
+                this._chromeProc = spawn(kromPath, kromArgs, {
                     detached: true,
                     stdio: ['ignore'],
                     cwd: path.join(args.krom, osDir())
@@ -104,20 +104,19 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
                     const errMsg = 'Krom error: ' + err;
                     logger.error(errMsg);
                     this.terminateSession(errMsg);
-                });*/
+                });
 
-                /*return new Promise<void>((resolve, rejevt) => {
+                /*return new Promise<void>((resolve, reject) => {
                     resolve();
                 });*/
                 return this.doAttach(port, 'http://krom', args.address);
             }, (reason) => {
-                return coreUtils.errP(`Launch canceled.`);
-                /*this.fireEvent(new OutputEvent('Launch canceled.\n', 'stderr'));
-                resolve();
-                this.fireEvent(new TerminatedEvent());
-                this.clearEverything();*/
+                logger.error('Launch canceled.', true);
+                return new Promise<void>((resolve) => {
+
+                });
             });
-       // });
+        });
     }
 
     public attach(args: IAttachRequestArgs): Promise<void> {
@@ -127,7 +126,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 
     protected doAttach(port: number, targetUrl?: string, address?: string, timeout?: number): Promise<void> {
         return super.doAttach(port, targetUrl, address, timeout).then(() => {
-            //this.runScript();
+            // this.runScript();
         });
     }
 
