@@ -12,8 +12,9 @@ import * as utils from './utils';
 
 import * as path from 'path';
 
-const DefaultWebsourceMapPathOverrides: ISourceMapPathOverrides = {
-    'webpack:///*': '${webRoot}/*',
+const DefaultWebSourceMapPathOverrides: ISourceMapPathOverrides = {
+    'webpack:///./*': '${webRoot}/*',
+    'webpack:///*': '*',
     'meteor://💻app/*': '${webRoot}/*',
 };
 
@@ -37,7 +38,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
     }
 
     public launch(args: ILaunchRequestArgs): Promise<void> {
-        args.sourceMapPathOverrides = args.sourceMapPathOverrides || DefaultWebsourceMapPathOverrides;
+        args.sourceMapPathOverrides = getSourceMapPathOverrides(args.webRoot, args.sourceMapPathOverrides);
         return super.launch(args).then(() => {
             logger.log('Using Kha from ' + args.kha + '\n', true);
 
@@ -120,7 +121,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
     }
 
     public attach(args: IAttachRequestArgs): Promise<void> {
-        args.sourceMapPathOverrides = args.sourceMapPathOverrides || DefaultWebsourceMapPathOverrides;
+        args.sourceMapPathOverrides = getSourceMapPathOverrides(args.webRoot, args.sourceMapPathOverrides);
         return super.attach(args);
     }
 
@@ -155,4 +156,33 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
             this.chrome.Runtime.runScript({scriptId: response.scriptId, executionContextId: 1});
         });
     }
+}
+
+function getSourceMapPathOverrides(webRoot: string, sourceMapPathOverrides?: ISourceMapPathOverrides): ISourceMapPathOverrides {
+    return sourceMapPathOverrides ? resolveWebRootPattern(webRoot, sourceMapPathOverrides, /*warnOnMissing=*/true) :
+            resolveWebRootPattern(webRoot, DefaultWebSourceMapPathOverrides, /*warnOnMissing=*/false);
+}
+
+/**
+ * Returns a copy of sourceMapPathOverrides with the ${webRoot} pattern resolved in all entries.
+ */
+export function resolveWebRootPattern(webRoot: string, sourceMapPathOverrides: ISourceMapPathOverrides, warnOnMissing: boolean): ISourceMapPathOverrides {
+    const resolvedOverrides: ISourceMapPathOverrides = {};
+    for (let pattern in sourceMapPathOverrides) {
+        const replacePattern = sourceMapPathOverrides[pattern];
+        resolvedOverrides[pattern] = replacePattern;
+
+        const webRootIndex = replacePattern.indexOf('${webRoot}');
+        if (webRootIndex === 0) {
+            if (webRoot) {
+                resolvedOverrides[pattern] = replacePattern.replace('${webRoot}', webRoot);
+            } else if (warnOnMissing) {
+                logger.log('Warning: sourceMapPathOverrides entry contains ${webRoot}, but webRoot is not set');
+            }
+        } else if (webRootIndex > 0) {
+            logger.log('Warning: in a sourceMapPathOverrides entry, ${webRoot} is only valid at the beginning of the path');
+        }
+    }
+
+    return resolvedOverrides;
 }

@@ -1,3 +1,26 @@
+## 2.2.1
+* Add the 'experimentalLibraryCode' launch option (see README).
+* Log unhandled exceptions for [#276](https://github.com/Microsoft/vscode-chrome-debug/issues/276)
+* Tweak in-box webpack configs to fit default configs that I've seen.
+* Fix "Breakpoints can go to wrong lines when set in merged files on startup" [#277](https://github.com/Microsoft/vscode-chrome-debug/issues/277)
+
+## 2.2.0
+* Implement the `.scripts` command in the debug console to print all the scripts loaded in Chrome, their sourcemap details, and inferred local paths, to make it easier to debug a project's debug config. See the README for more details.
+* Make the "Add watch" context menu item work much more robustly.
+* Fix "Console logs missing in pre-Chrome 54" [#265](https://github.com/Microsoft/vscode-chrome-debug/issues/265)
+* Fix "sourceMapPathOverrides matching doesn't work when sourceRoot does not end in /" - [Microsoft/vscode-chrome-debug-core](https://github.com/microsoft/vscode-chrome-debug-core/issues/78)
+
+## 2.1.3
+* Error handling for invalid messages from Chrome, to avoid crashing - [#274](https://github.com/Microsoft/vscode-chrome-debug/issues/274)
+* Fix potential issue with sourcemap path handling on Windows
+
+## 2.1.2
+* Revert an earlier change to the filtering logic, which only worked for vscode 1.7+, and caused some objects to not be expandable - [#273](https://github.com/Microsoft/vscode-chrome-debug/issues/273)
+
+## 2.1.1
+* Fix setting breakpoints before startup in scripts that don't have sourcemaps - [Microsoft/vscode-chrome-debug-core#121](https://github.com/Microsoft/vscode-chrome-debug-core/issues/121)
+* Fix a certain format of sourceMappingUrl - [#269](https://github.com/Microsoft/vscode-chrome-debug/issues/269)
+
 ## 2.1.0
 * Object previews - see the first several properties of an object or array inline, without having to expand it - [Microsoft/vscode-chrome-debug-core#120](https://github.com/Microsoft/vscode-chrome-debug-core/issues/120)
 * Fix debugging with file:/// paths on windows - [#264](https://github.com/Microsoft/vscode-node-debug2/issues/264)
