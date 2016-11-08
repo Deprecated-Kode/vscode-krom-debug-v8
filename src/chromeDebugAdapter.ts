@@ -74,7 +74,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
                 port: 8080,
                 debug: false,
                 silent: false,
-                watch: false
+                watch: true
             };
 
             require(path.join(args.kha, 'Tools/khamake/out/main.js')).run(options, {
