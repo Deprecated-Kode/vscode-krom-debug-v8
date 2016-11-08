@@ -2,7 +2,7 @@
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
 
-import {ChromeDebugSession, logger, UrlPathTransformer, BaseSourceMapTransformer} from 'vscode-chrome-debug-core';
+import {ChromeDebugSession, /*logger,*/ UrlPathTransformer, BaseSourceMapTransformer} from 'vscode-chrome-debug-core';
 import * as path from 'path';
 
 import {ChromeDebugAdapter} from './chromeDebugAdapter';
@@ -30,4 +30,4 @@ ChromeDebugSession.run(ChromeDebugSession.getSession(
         sourceMapTransformer: BaseSourceMapTransformer,
     }));
 
-logger.log(EXTENSION_NAME + ': ' + VERSION);
+// logger.log(EXTENSION_NAME + ': ' + VERSION); // This would crash because we do not use webpack
