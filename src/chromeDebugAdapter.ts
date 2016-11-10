@@ -10,6 +10,7 @@ import {DebugProtocol} from 'vscode-debugprotocol';
 import {ILaunchRequestArgs, IAttachRequestArgs} from './chromeDebugInterfaces';
 import * as utils from './utils';
 
+import * as os from 'os';
 import * as path from 'path';
 
 const DefaultWebSourceMapPathOverrides: ISourceMapPathOverrides = {
@@ -19,11 +20,27 @@ const DefaultWebSourceMapPathOverrides: ISourceMapPathOverrides = {
 };
 
 function osDir(): string {
-    return 'win32';
+    if (os.platform() === 'darwin') {
+        return path.join('macos', 'Krom.app', 'Contents', 'MacOS');
+    }
+    else if (os.platform() === 'win32') {
+        return 'win32';
+    }
+    else {
+        return 'linux';
+    }
 }
 
 function osExt(): string {
-    return '.exe';
+    if (os.platform() === 'darwin') {
+        return '';
+    }
+    else if (os.platform() === 'win32') {
+        return '.exe';
+    }
+    else {
+        return '';
+    }
 }
 
 export class ChromeDebugAdapter extends CoreDebugAdapter {
