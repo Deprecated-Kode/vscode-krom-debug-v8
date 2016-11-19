@@ -22,11 +22,9 @@ const DefaultWebSourceMapPathOverrides: ISourceMapPathOverrides = {
 function osDir(): string {
     if (os.platform() === 'darwin') {
         return path.join('macos', 'Krom.app', 'Contents', 'MacOS');
-    }
-    else if (os.platform() === 'win32') {
+    } else if (os.platform() === 'win32') {
         return 'win32';
-    }
-    else {
+    } else {
         return 'linux';
     }
 }
@@ -34,11 +32,9 @@ function osDir(): string {
 function osExt(): string {
     if (os.platform() === 'darwin') {
         return '';
-    }
-    else if (os.platform() === 'win32') {
+    } else if (os.platform() === 'win32') {
         return '.exe';
-    }
-    else {
+    } else {
         return '';
     }
 }
@@ -145,7 +141,13 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
     protected doAttach(port: number, targetUrl?: string, address?: string, timeout?: number): Promise<void> {
         return super.doAttach(port, targetUrl, address, timeout).then(() => {
             // this.runScript();
+            this.chrome.Log.onEntryAdded(params => this.onEntryAdded(params));
+            // this.chrome.Log.enable();
         });
+    }
+
+    protected onEntryAdded(event: Crdp.Log.EntryAddedEvent): void {
+        logger.log(event.entry.text, true);
     }
 
     protected onPaused(notification: Crdp.Debugger.PausedEvent): void {
