@@ -107,8 +107,8 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
                 }
 
                 // Start with remote debugging enabled
-                const port = args.port || 9224;
-                const kromArgs: string[] = [path.join(args.cwd, 'build', 'krom'), path.join(args.cwd, 'build', 'krom-resources')];
+                const port = args.port || Math.floor((Math.random() * 10000) + 10000);
+                const kromArgs: string[] = [path.join(args.cwd, 'build', 'krom'), path.join(args.cwd, 'build', 'krom-resources'), '--debug', port.toString(), '--watch'];
 
                 logger.log(`spawn('${kromPath}', ${JSON.stringify(kromArgs) })`);
                 this._chromeProc = spawn(kromPath, kromArgs, {
