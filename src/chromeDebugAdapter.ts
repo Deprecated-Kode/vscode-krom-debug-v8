@@ -45,12 +45,15 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
     private _chromeProc: ChildProcess;
     private _overlayHelper: utils.DebounceHelper;
 
+    private _kha: string;
+
     public initialize(args: DebugProtocol.InitializeRequestArguments): DebugProtocol.Capabilities {
         this._overlayHelper = new utils.DebounceHelper(/*timeoutMs=*/200);
         return super.initialize(args);
     }
 
     public launch(args: ILaunchRequestArgs): Promise<void> {
+        this._kha = args.kha;
         args.sourceMapPathOverrides = getSourceMapPathOverrides(args.webRoot, args.sourceMapPathOverrides);
         return super.launch(args).then(() => {
             logger.log('Using Kha from ' + args.kha + '\n', true);
@@ -126,6 +129,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
                 return this.doAttach(port, 'http://krom', args.address);
             }, (reason) => {
                 logger.error('Launch canceled.', true);
+                require(path.join(this._kha, 'Tools/khamake/out/main.js')).close();
                 return new Promise<void>((resolve, reject) => {
                     reject({id: Math.floor(Math.random() * 100000), format: 'Compilation failed.'});
                 });
@@ -165,6 +169,8 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
             this._chromeProc.kill('SIGINT');
             this._chromeProc = null;
         }
+
+        require(path.join(this._kha, 'Tools/khamake/out/main.js')).close();
 
         return super.disconnect();
     }
