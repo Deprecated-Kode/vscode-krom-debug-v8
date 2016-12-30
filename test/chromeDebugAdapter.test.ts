@@ -68,6 +68,15 @@ suite('ChromeDebugAdapter', () => {
     });
 
     suite('launch()', () => {
+        let originalSpawn: any;
+        let originalStatSync: any;
+
+        teardown(() => {
+            // Hacky mock cleanup
+            require('child_process').spawn = originalSpawn;
+            require('fs').statSync = originalStatSync;
+        })
+
         test('launches with minimal correct args', () => {
             let spawnCalled = false;
             function spawn(chromePath: string, args: string[]): any {
@@ -84,7 +93,9 @@ suite('ChromeDebugAdapter', () => {
 
             // Mock spawn for chrome process, and 'fs' for finding chrome.exe.
             // These are mocked as empty above - note that it's too late for mockery here.
+            originalSpawn = require('child_process').spawn;
             require('child_process').spawn = spawn;
+            originalStatSync = require('fs').statSync;
             require('fs').statSync = () => true;
 
             mockChromeConnection
@@ -94,7 +105,7 @@ suite('ChromeDebugAdapter', () => {
 
             mockChrome.Runtime
                 .setup(x => x.evaluate(It.isAny()))
-                .returns(() => Promise.resolve({ result: { value: '123' }}));
+                .returns(() => Promise.resolve<any>({ result: { type: 'string', value: '123' }}));
 
             return chromeDebugAdapter.launch({ file: 'c:\\path with space\\index.html', runtimeArgs: ['abc', 'def'] })
                 .then(() => assert(spawnCalled));

@@ -1,7 +1,7 @@
 {
   "name": "debugger-for-krom",
   "displayName": "Debugger for Krom",
-  "version": "2.2.1",
+  "version": "2.4.1",
   "icon": "images/icon.png",
   "description": "Debug your JavaScript code in Krom.",
   "author": {
@@ -14,16 +14,16 @@
   "publisher": "msjsdiag",
   "bugs": "https://github.com/microsoft/vscode-chrome-debug/issues",
   "engines": {
-    "vscode": "^1.6.0"
+    "vscode": "^1.8.0"
   },
   "categories": [
     "Debuggers"
   ],
   "license": "SEE LICENSE IN LICENSE.txt",
   "dependencies": {
-    "vscode-chrome-debug-core": "3.6.1",
-    "vscode-debugadapter": "^1.14.0",
-    "vscode-debugprotocol": "^1.14.0"
+    "vscode-chrome-debug-core": "3.8.2",
+    "vscode-debugadapter": "^1.15.0",
+    "vscode-debugprotocol": "^1.15.0"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.32",
@@ -37,7 +37,7 @@
     "build:test": "tsc -p test/tsconfig.json",
     "watch": "webpack -w",
     "watch:test": "tsc -p test/tsconfig.json -w",
-    "test": "mocha -u tdd -c 'out/test/**/*.test.js'",
+    "test": "mocha --timeout 20000 -s 2000 -u tdd --colors --reporter out/test/int/loggingReporter.js './out/test/**/*.test.js'",
     "lint": "tslint -t verbose 'src/**/*.ts' 'test/**/*.ts'",
     "vscode:prepublish": "gulp verify-no-linked-modules"
   },
@@ -164,9 +164,9 @@
                 "description": "Automatically step through generated code that cannot be mapped back to the original source.",
                 "default": true
               },
-              "experimentalLibraryCode": {
+              "skipFiles": {
                 "type": "array",
-                "description": "An array of file or folder names, or path regexes, to skip when debugging.",
+                "description": "An array of file or folder names, or path globs, to skip when debugging.",
                 "default": []
               }
             }
@@ -221,9 +221,9 @@
                 "description": "Automatically step through generated code that cannot be mapped back to the original source.",
                 "default": true
               },
-              "experimentalLibraryCode": {
+              "skipFiles": {
                 "type": "array",
-                "description": "An array of file or folder names, or path regexes, to skip when debugging.",
+                "description": "An array of file or folder names, or path globs, to skip when debugging.",
                 "default": []
               }
             }

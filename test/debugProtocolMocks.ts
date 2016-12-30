@@ -15,6 +15,7 @@ export interface IMockChromeConnectionAPI {
     Debugger: Mock<Crdp.DebuggerClient>;
     Runtime: Mock<Crdp.RuntimeClient>;
     Inspector: Mock<Crdp.InspectorClient>;
+    Page: Mock<Crdp.PageClient>;
 
     mockEventEmitter: EventEmitter;
 }
@@ -34,6 +35,7 @@ function getDebuggerStubs(mockEventEmitter) {
         removeBreakpoint() { },
         enable() { },
         evaluateOnCallFrame() { },
+        setBlackboxPatterns() { },
 
         onPaused(handler) { mockEventEmitter.on('Debugger.paused', handler); },
         onResumed(handler) { mockEventEmitter.on('Debugger.resumed', handler); },
@@ -48,7 +50,8 @@ function getRuntimeStubs(mockEventEmitter) {
         evaluate() { },
 
         onConsoleAPICalled(handler) { mockEventEmitter.on('Runtime.consoleAPICalled', handler); },
-        onExecutionContextsCleared(handler) { mockEventEmitter.on('Runtime.executionContextsCleared', handler); }
+        onExecutionContextsCleared(handler) { mockEventEmitter.on('Runtime.executionContextsCleared', handler); },
+        onExceptionThrown(handler) { mockEventEmitter.on('Runtime.onExceptionThrown', handler); }
     };
 }
 
@@ -56,6 +59,12 @@ function getInspectorStubs(mockEventEmitter) {
     return {
         onDetached(handler) { mockEventEmitter.on('Inspector.detach', handler); }
     };
+}
+
+function getPageStubs() {
+    return {
+        enable() { }
+    }
 }
 
 export function getMockChromeConnectionApi(): IMockChromeConnectionAPI {
@@ -82,11 +91,14 @@ export function getMockChromeConnectionApi(): IMockChromeConnectionAPI {
     let mockInspector = Mock.ofInstance<Crdp.InspectorClient>(<any>getInspectorStubs(mockEventEmitter));
     mockInspector.callBase = true;
 
+    let mockPage = Mock.ofInstance<Crdp.PageClient>(<any>getPageStubs());
+
     const chromeConnectionAPI: Crdp.CrdpClient = <any>{
         Console: mockConsole.object,
         Debugger: mockDebugger.object,
         Runtime: mockRuntime.object,
-        Inspector: mockInspector.object
+        Inspector: mockInspector.object,
+        Page: mockPage.object
     };
 
     return {
@@ -96,6 +108,7 @@ export function getMockChromeConnectionApi(): IMockChromeConnectionAPI {
         Debugger: mockDebugger,
         Runtime: mockRuntime,
         Inspector: mockInspector,
+        Page: mockPage,
 
         mockEventEmitter
     };

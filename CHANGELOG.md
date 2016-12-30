@@ -1,5 +1,32 @@
+## 2.4.1
+* Fix hover not working when using sourcemaps, and scripts are not on disk - [#309](https://github.com/Microsoft/vscode-chrome-debug/issues/309)
+
+## 2.4.0
+* Change `experimentalSkipFiles` name to `skipFiles`, as this feature is shipping with the Node debugger in 1.8.
+* Fix issues with hover by correctly applying sourcemaps to scope locations - [#141](https://github.com/Microsoft/vscode-chrome-debug-core/issues/141)
+
+## 2.3.2
+* Fix console.log regression in 2.3.1
+
+## 2.3.1
+* Fix crash when refreshing the page in some cases - [#297](https://github.com/Microsoft/vscode-chrome-debug/issues/297)
+
+## 2.3.0
+* The restart button will now refresh the page instead of relaunching Chrome (works in Insiders, or VS Code 1.8) - [#91](https://github.com/Microsoft/vscode-chrome-debug-core/issues/91)
+* The `experimentalLibraryCode` setting is now called `experimentalSkipFiles`
+* The `experimentalSkipFiles` setting now takes a glob pattern instead of a regex - [#127](https://github.com/Microsoft/vscode-chrome-debug-core/issues/127)
+* The `experimentalSkipFiles` setting can now take sourcemapped paths to exclude - [#128](https://github.com/Microsoft/vscode-chrome-debug-core/issues/128)
+* An issue with breakpoints moving around on a page refresh has hopefully been fixed - [#296](https://github.com/Microsoft/vscode-chrome-debug/issues/296)
+* Fix crash "path must be a string" when parsing sourcemaps on some eval scripts - [#268](https://github.com/Microsoft/vscode-chrome-debug/issues/268)
+* Fix errors when pausing in chrome extension scripts by blackboxing extension content scripts - [#124](https://github.com/Microsoft/vscode-chrome-debug/issues/124)
+
+## 2.2.2
+* Handle another format of Console.MessageAdded - [#276](https://github.com/Microsoft/vscode-chrome-debug/issues/276)
+* Fix "Pending breakpoints resolved after refreshing the page sometimes don't bind correctly" - [#279](https://github.com/Microsoft/vscode-chrome-debug/issues/279)
+* Strip %c color specifiers - [#282](https://github.com/Microsoft/vscode-chrome-debug/issues/282)
+
 ## 2.2.1
-* Add the 'experimentalLibraryCode' launch option (see README).
+* Add the `experimentalLibraryCode` launch option (see README).
 * Log unhandled exceptions for [#276](https://github.com/Microsoft/vscode-chrome-debug/issues/276)
 * Tweak in-box webpack configs to fit default configs that I've seen.
 * Fix "Breakpoints can go to wrong lines when set in merged files on startup" [#277](https://github.com/Microsoft/vscode-chrome-debug/issues/277)
