@@ -159,7 +159,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
     }
 
     protected runConnection(): Promise<void>[] {
-        return [...super.runConnection(), this.chrome.Page.enable()];
+        return [...super.runConnection()];//, this.chrome.Page.enable()];
     }
 
     protected onEntryAdded(event: Crdp.Log.EntryAddedEvent): void {
