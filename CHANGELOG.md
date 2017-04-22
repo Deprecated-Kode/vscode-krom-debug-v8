@@ -1,3 +1,85 @@
+## 3.0.1
+* Fix "Windows - Electron app fails to start after upgrading to 3.0.0" [#407](https://github.com/Microsoft/vscode-chrome-debug/issues/407)
+  * On Windows, the code to prevent Chrome from closing when opening Chrome Devtools [#116](https://github.com/microsoft/vscode-chrome-debug/issues/116) is now not enabled when specifying a runtimeExecutable, until I find a better solution.
+
+## 3.0.0
+* Enable userDataDir by default - [#210](https://github.com/microsoft/vscode-chrome-debug/issues/210)
+* Keep Chrome open when launching chrome devtools (now also on Windows) - [#116](https://github.com/microsoft/vscode-chrome-debug/issues/116)
+* Error while debugging: Unable to open 'undefined': File not found (/undefined) - [Microsoft/vscode-chrome-debug-core#189](https://github.com/Microsoft/vscode-chrome-debug-core/issues/189)
+* Show empty property names as "" - [Microsoft/vscode#24143](https://github.com/Microsoft/vscode/issues/24143)
+
+## 2.7.3
+* Fix missing variables and error "Cannot read property 'length' of undefined" - [Microsoft/vscode-chrome-debug-core#195](https://github.com/Microsoft/vscode-chrome-debug-core/issues/195)
+* Fix sourcemapping issue when throwing non-Error
+* Fix exception messages in the console missing a trailing newline
+* Exception sourcemapping should also map non-sourcemapped scripts to file on disk
+
+## 2.7.2
+* Fix "pathMapping key must end in '/'" - thanks to [@mlewand](https://github.com/mlewand) for the PR! - [#393](https://github.com/Microsoft/vscode-chrome-debug/issues/393)
+* Add "Toggle skipping this file" context menu option to callstack - [Microsoft/vscode-chrome-debug-core#172](https://github.com/Microsoft/vscode-chrome-debug-core/issues/172)
+* Document "showAsyncStacks" launch config option (VS Code 1.11 recommended)
+* Don't repeat exception description in exception info widget - [Microsoft/vscode-chrome-debug-core#192](https://github.com/Microsoft/vscode-chrome-debug-core/issues/192)
+* Fix error in async stacks when no sourcemaps are present
+
+## 2.7.1
+* Support source mapping of stack traces in the Debug Console - thanks to [nojvek](https://github.com/nojvek) for the PR! - [Microsoft/vscode-chrome-debug-core#190](https://github.com/Microsoft/vscode-chrome-debug-core/issues/190)
+* Show error callstack in new Exception widget when pausing on an exception (sourcemapped, thanks to the above)
+* Fix BPs sometimes removed when editing while debugging - [Microsoft/vscode#22492](https://github.com/microsoft/vscode/issues/22492)
+* Fix some errors when stepping quickly - [Microsoft/vscode#22855](https://github.com/microsoft/vscode/issues/22855)
+* Show "Chrome" instead of "Thread 1" as thread name when debugging multiple things at once
+* Fix crash when debugging with async callstacks and sourcemaps disabled
+
+## 2.7.0
+* Implement `disableNetworkCache` option - [#358](https://github.com/Microsoft/vscode-chrome-debug/issues/358)
+* If you are using VS Code 1.11, set the undocumented property `showAsyncStacks` to see async callstacks.
+* Implement `urlFilter` to give 'launch' configs a way to select which page to attach to, e.g. for Electron apps with multiple BrowserWindows - [#382](https://github.com/Microsoft/vscode-chrome-debug/issues/382)
+* Nicer error messages when a source map fails to parse - thanks to [nojvek](https://github.com/nojvek) for the PR! - [Microsoft/vscode-chrome-debug-core#188](https://github.com/Microsoft/vscode-chrome-debug-core/issues/188)
+* Fix code that prevents the extension from incorrectly attaching to a Chrome extension
+* Fix crash when 'url' is not specified in an 'attach'-type config
+
+## 2.6.0
+* When opening Chrome Devtools, Chrome will no longer crash. The debugger will still detach (only one debugger can be attached at a time) but you should be able to switch back and forth.
+* The timeout when launching or attaching to Chrome is now configurable. It's 10s by default. - [#346](https://github.com/Microsoft/vscode-chrome-debug/issues/346)
+* Fix setting BPs in source that's inlined in a sourcemap - [Microsoft/vscode-chrome-debug-core#180](https://github.com/Microsoft/vscode-chrome-debug-core/issues/180)
+* Fix breakpoints shifting in some situations where they shouldn't, when Chrome returns a BP location that can't be sourcemapped - [Microsoft-node-debug2#90](https://github.com/Microsoft/vscode-node-debug2/issues/90)
+* Add a pause reason for promise rejection - [Microsoft-node-debug2#46](https://github.com/Microsoft/vscode-node-debug2/issues/46)
+* Show exception text in the new exception widget in VS Code 1.10 - [Microsoft/vscode-chrome-debug-core#181](https://github.com/Microsoft/vscode-chrome-debug-core/issues/181)
+* `diagnosticLogging` and `verboseDiagnosticLogging` are now deprecated in favor of the `trace` option. `"trace": true` will write all logs to a file, and write the path to the file in the debug console. `"trace": "verbose"` will write all logs to the debug console, and to the file.
+
+## 2.5.5
+* Fix "Cannot find context with specified id" error spam - [#264](https://github.com/Microsoft/vscode-chrome-debug/issues/364)
+
+## 2.5.4
+* pathMapping doesn't work on attaching to existing tab, thanks for the PR from [llgcode](https://github.com/llgcode) - [Microsoft/vscode#175](https://github.com/Microsoft/vscode-chrome-debug-core/issues/175)
+* Disabled column BPs for VS Code 1.10, since they aren't supported yet.
+* Don't show TypeError for watch when not at a BP - [Microsoft/vscode#173](https://github.com/Microsoft/vscode-chrome-debug-core/issues/173)
+
+## 2.5.3
+* Fix "Cannot read property 'line' of null", breakpoints not working - [#353](https://github.com/Microsoft/vscode-chrome-debug/issues/353)
+
+## 2.5.2
+* Fix watches being broken while stepping - [Microsoft/vscode-chrome-debug-core#166](https://github.com/Microsoft/vscode-chrome-debug-core/issues/166)
+* Fix error "Error processing 'stackTrace': TypeError: Cannot read property 'scriptId' of undefined" - [Microsoft/vscode-chrome-debug-core#167](https://github.com/Microsoft/vscode-chrome-debug-core/issues/167)
+
+## 2.5.1
+* Just removing the 'languages' entry in package.json to work around a VS Code 1.9 issue - [#348](https://github.com/Microsoft/vscode-chrome-debug/issues/348)
+
+## 2.5.0
+* Resolving sourcemaps from https, thanks to a PR from [kanongil](https://github.com/kanongil) - [Microsoft/vscode-chrome-debug-core#151](https://github.com/Microsoft/vscode-chrome-debug-core/pull/151)
+* Add the 'pathMapping' property to handle cases when 'webRoot' is not enough to map URLs to local paths, thanks to a PR from [llgcode](https://github.com/llgcode) - [Microsoft/vscode-chrome-debug-core#147](https://github.com/Microsoft/vscode-chrome-debug-core/pull/147)
+* Implemented dynamic 'skipFiles' support, which you will also see in the `node2` debug adapter. Right click on a stack frame to skip it. VS Code 1.9+ only. [Microsoft/vscode-chrome-debug-core#129](https://github.com/Microsoft/vscode-chrome-debug-core/issues/129)
+* Log expandable objects in the console, instead of just static string representations of objects - [Microsoft/vscode-chrome-debug-core#145](https://github.com/Microsoft/vscode-chrome-debug-core/issues/145)
+* 'step in' with a watch sometimes opens empty editor and crashes adapter - [Microsoft/vscode-chrome-debug-core#148](https://github.com/Microsoft/vscode-chrome-debug-core/issues/148)
+* Show skip frame status in callstack. With VS Code 1.9, skipped frames will be grayed out. - [Microsoft/vscode-chrome-debug-core#150](https://github.com/Microsoft/vscode-chrome-debug-core/issues/150)
+* Add configurationSnippets for common launch config scenarios - [#336](https://github.com/Microsoft/vscode-chrome-debug/issues/336)
+* Use correct sourcemaps after the page reloads - [#152](https://github.com/Microsoft/vscode-chrome-debug/issues/152)
+* And even more bugfixes that I won't enumerate
+
+## 2.4.2
+* Enable `sourceMaps` by default. You no longer need to set `"sourceMaps": true` in your launch config, but can set it to false to disable loading sourcemaps - [#134](https://github.com/Microsoft/vscode-chrome-debug-core/issues/134)
+* Fix boolean properties showing as strings - [#312](https://github.com/Microsoft/vscode-chrome-debug/issues/312)
+* Fix unhandled exceptions not being logged to the console - [#130](https://github.com/Microsoft/vscode-chrome-debug-core/issues/130)
+
 ## 2.4.1
 * Fix hover not working when using sourcemaps, and scripts are not on disk - [#309](https://github.com/Microsoft/vscode-chrome-debug/issues/309)
 

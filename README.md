@@ -51,17 +51,17 @@ Two example `launch.json` configs with `"request": "launch"`. You must specify e
     "version": "0.1.0",
     "configurations": [
         {
-            "name": "Launch localhost with sourcemaps",
+            "name": "Launch localhost",
             "type": "chrome",
             "request": "launch",
             "url": "http://localhost/mypage.html",
-            "webRoot": "${workspaceRoot}/app/files",
-            "sourceMaps": true
+            "webRoot": "${workspaceRoot}/wwwroot"
         },
         {
-            "name": "Launch index.html (without sourcemaps)",
+            "name": "Launch index.html (disable sourcemaps)",
             "type": "chrome",
             "request": "launch",
+            "sourceMaps": false,
             "file": "${workspaceRoot}/index.html"
         },
     ]
@@ -70,8 +70,10 @@ Two example `launch.json` configs with `"request": "launch"`. You must specify e
 
 If you want to use a different installation of Chrome, you can also set the "runtimeExecutable" field with a path to the Chrome app.
 
+> Chrome user profile note: Normally, if Chrome is already running when you start debugging with a launch config, then the new instance won't start in remote debugging mode. So by default, the extension launches Chrome with a separate user profile in a temp folder, (unless you are using the "runtimeExecutable" field). Use the `userDataDir` launch config field to override or disable this.
+
 ### Attach
-With `"request": "attach"`, you must launch Chrome with remote debugging enabled in order for the extension to attach to it.
+With `"request": "attach"`, you must launch Chrome with remote debugging enabled in order for the extension to attach to it. Here's how to do that:
 
 __Windows__
 * Right click the Chrome shortcut, and select properties
@@ -84,20 +86,22 @@ __macOS__
 __Linux__
 * In a terminal, launch `google-chrome --remote-debugging-port=9222`
 
+If you have another instance of Chrome running and don't want to restart it, you can run the new instance under a separate user profile with the  `--user-data-dir` option. Example: `--user-data-dir=/tmp/chrome-debug`. This is the same as using the `userDataDir` option in a launch-type config.
+
 Launch Chrome and navigate to your page.
 
-An example `launch.json` config.
+An example `launch.json` file for an "attach" config.
 ```json
 {
     "version": "0.1.0",
     "configurations": [
         {
-            "name": "Attach with sourcemaps",
+            "name": "Attach",
             "type": "chrome",
             "request": "attach",
             "port": 9222,
-            "sourceMaps": true,
-            "url": "<url of the open browser tab to connect to>"
+            "url": "<url of the open browser tab to connect to>",
+            "webRoot": "${workspaceRoot}"
         },
         {
             "name": "Attach to url with files served from ./out",
@@ -105,7 +109,7 @@ An example `launch.json` config.
             "request": "attach",
             "port": 9222,
             "url": "<url of the open browser tab to connect to>",
-            "webRoot": "${workspaceRoot}/out"
+            "webRoot": "${workspaceRoot}"
         }
     ]
 }
@@ -119,23 +123,22 @@ See our wiki page for some configured example apps: [Examples](https://github.co
 
 
 ### Other optional launch config fields
-* `diagnosticLogging`: When true, the adapter logs its own diagnostic info to the console, _and_ to this file: `~/.vscode/extensions/msjsdiag.debugger-for-chrome/vscode-chrome-debug.txt`. This is often useful info to include when filing an issue on GitHub.
+* `trace`: When true, the adapter logs its own diagnostic info to this file: `~/.vscode/extensions/msjsdiag.debugger-for-chrome/vscode-chrome-debug.txt`. This is often useful info to include when filing an issue on GitHub. If you set it to "verbose", it will also log to the console.
 * `runtimeExecutable`: Workspace relative or absolute path to the runtime executable to be used. If not specified, Chrome will be used from the default install location
 * `runtimeArgs`: Optional arguments passed to the runtime executable
-* `userDataDir`: Can be set to a temp directory, then Chrome will use that directory as the user profile directory. If Chrome is already running when you start debugging with a launch config, then the new instance won't start in remote debugging mode. If you don't want to close the original instance, you can set this property and the new instance will correctly be in remote debugging mode.
-* `url`: Required for a 'launch' config. For an attach config, the debugger will search for a tab that has that URL. It can also contain wildcards, for example, `"localhost:*/app"` will match either `"http://localhost:123/app"` or `"http://localhost:456/app"`, but not `"http://stackoverflow.com"`.
-* `sourceMapPathOverrides`: A mapping of source paths from the sourcemap, to the locations of these sources on disk. Useful when the sourcemap isn't accurate or can't be fixed in the build process. The left hand side of the mapping is a pattern that can contain a wildcard, and will be tested against the `sourceRoot` + `sources` entry in the source map. If it matches, the source file will be resolved to the path on the right hand side, which should be an absolute path to the source file on disk.
- A couple mappings are applied by default, corresponding to the default configs for Webpack and Meteor -
-```
-"sourceMapPathOverrides": {
-    "webpack:///./*":   "${webRoot}/*", // Example: "webpack:///./src/app.js" -> "/users/me/project/src/app.js"
-    "webpack:///*":     "*",            // Example: "webpack:///C:/project/app.ts" -> "C:/project/app.ts"
-    "meteor://💻app/*": "${webRoot}/*"  // Example: "meteor://💻app/main.ts" -> "c:/code/main.ts"
-}
-```
-If you set `sourceMapPathOverrides` in your launch config, that will override these defaults. `${workspaceRoot}` and `${webRoot}` can be used here. If you aren't sure what the left side should be, you can use the `.scripts` command (details below). You can also use the `diagnosticLogging`/`verboseDiagnosticLogging` options to see the contents of the sourcemap, or look at the paths of the sources in Chrome DevTools, or open your `.js.map` file and check the values manually.
+* `userDataDir`: Normally, if Chrome is already running when you start debugging with a launch config, then the new instance won't start in remote debugging mode. So by default, the extension launches Chrome with a separate user profile in a temp folder. Use this option to set a different path to use, or set to false to launch with your default user profile.
+* `url`: On a 'launch' config, it will launch Chrome at this URL.
+* `urlFilter`: On an 'attach' config, or a 'launch' config with no 'url' set, search for a page with this url and attach to it. It can also contain wildcards, for example, `"localhost:*/app"` will match either `"http://localhost:123/app"` or `"http://localhost:456/app"`, but not `"http://stackoverflow.com"`.
+* `sourceMaps`: By default, the adapter will use sourcemaps and your original sources whenever possible. You can disable this by setting `sourceMaps` to false.
+* `pathMapping`: This property takes a mapping of URL paths to local paths, to give you more flexibility in how URLs are resolved to local files. `"webRoot": "${workspaceRoot}"` is just shorthand for a pathMapping like `{ "/": "${workspaceRoot}" }`.
+* `smartStep`: Automatically steps over code that doesn't map to source files. Especially useful for debugging with async/await.
+* `disableNetworkCache`: If true, the network cache will be disabled.
+* `showAsyncStacks`: If true, callstacks across async calls (like `setTimeout`, `fetch`, resolved Promises, etc) will be shown.
 
-* `skipFiles`: An array of names of folders/files to skip when debugging. For example, if you set `"skipFiles": ["jquery.js"]`, then you will skip any file named 'jquery.js' when stepping through your code. You also won't break on exceptions thrown from 'jquery.js'. This works the same as "blackboxing scripts" in Chrome DevTools. The supported formats are:
+## Skip files / Blackboxing / Ignore files
+You can use the `skipFiles` property to ignore/blackbox specific files while debugging. For example, if you set `"skipFiles": ["jquery.js"]`, then you will skip any file named 'jquery.js' when stepping through your code. You also won't break on exceptions thrown from 'jquery.js'. This works the same as "blackboxing scripts" in Chrome DevTools.
+
+The supported formats are:
   * The name of a file (like `jquery.js`)
   * The name of a folder, under which to skip all scripts (like `node_modules`)
   * A path glob, to skip all scripts that match (like `node_modules/react/*.min.js`)
@@ -152,7 +155,23 @@ This debugger also enables you to refresh your target by simply hitting the `res
 ```
 Read more here https://github.com/Microsoft/vscode-chrome-debug-core/issues/91#issuecomment-265027348
 
-## Ionic/gulp-sourcemaps note
+## Sourcemaps
+The debugger uses sourcemaps to let you debug with your original sources, but sometimes the sourcemaps aren't generated properly and overrides are needed. In the config we support `sourceMapPathOverrides`. A mapping of source paths from the sourcemap, to the locations of these sources on disk. Useful when the sourcemap isn't accurate or can't be fixed in the build process.
+
+The left hand side of the mapping is a pattern that can contain a wildcard, and will be tested against the `sourceRoot` + `sources` entry in the source map. If it matches, the source file will be resolved to the path on the right hand side, which should be an absolute path to the source file on disk.
+
+A few mappings are applied by default, corresponding to the default configs for Webpack and Meteor -
+```
+"sourceMapPathOverrides": {
+    "webpack:///./~/*": "${webRoot}/node_modules/*",       // Example: "webpack:///./~/querystring/index.js" -> "/Users/me/project/node_modules/querystring/index.js"
+    "webpack:///./*":   "${webRoot}/*",                    // Example: "webpack:///./src/app.js" -> "/users/me/project/src/app.js",
+    "webpack:///*":     "*",                               // Example: "webpack:///C:/project/app.ts" -> "C:/project/app.ts"
+    "meteor://💻app/*": "${webRoot}/*"                    // Example: "meteor://💻app/main.ts" -> "c:/code/main.ts"
+}
+```
+If you set `sourceMapPathOverrides` in your launch config, that will override these defaults. `${workspaceRoot}` and `${webRoot}` can be used here. If you aren't sure what the left side should be, you can use the `.scripts` command (details below). You can also use the `trace` option to see the contents of the sourcemap, or look at the paths of the sources in Chrome DevTools, or open your `.js.map` file and check the values manually.
+
+### Ionic/gulp-sourcemaps note
 Ionic and gulp-sourcemaps output a sourceRoot of `"/source/"` by default. If you can't fix this via your build config, I suggest this setting:
 ```
 "sourceMapPathOverrides": {
@@ -176,7 +195,7 @@ This message means that the extension can't attach to Chrome, because Chrome was
 * Check the console for warnings that this extension prints in some cases when it can't attach
 * Ensure the code in Chrome matches the code in Code. Chrome may cache an old version.
 * If your breakpoints bind, but aren't hit, try refreshing the page. If you set a breakpoint in code that runs immediately when the page loads, you won't hit that breakpoint until you refresh the page.
-* File a bug in this extension's [GitHub repo](https://github.com/Microsoft/vscode-chrome-debug). Set the "diagnosticLogging" field in your launch config and attach the logs when filing a bug. You can drag this file into the GitHub comment box: `~/.vscode/extensions/msjsdiag.debugger-for-chrome-<version>/vscode-chrome-debug.txt`.
+* File a bug in this extension's [GitHub repo](https://github.com/Microsoft/vscode-chrome-debug). Set the "trace" field in your launch config and attach the logs when filing a bug. You can drag this file into the GitHub comment box: `~/.vscode/extensions/msjsdiag.debugger-for-chrome-<version>/vscode-chrome-debug.txt`.
 
 ### The `.scripts` command
 This feature is extremely useful for understanding how the extension maps files in your workspace to files running in Chrome. You can enter `.scripts` in the debug console to see a listing of all scripts loaded in the runtime, their sourcemap information, and how they are mapped to files on disk. The format is like this:

@@ -2,6 +2,10 @@ const globalCode = 'page loaded';
 console.log(globalCode);
 
 function locals() {
+    setTimeout(() => {
+        let x = 1;
+    }, 1000);
+
     const manyPropsObj: any = { prop2: 'abc', prop1: 'def' };
     for (let i=0; i<=100; i++) manyPropsObj[i] = Math.random();
 
@@ -41,9 +45,9 @@ newlines`;
     var str = 'hello';
     var xyz = 1;
     var obj = { a: 2, get thing() { throw 'xyz'; }, set thing(x) { } };
-    xyz++;                     xyz++;
+    xyz++;                xyz++;          xyz++;
 
-    anotherFn();
+    anotherFn(fn);
     fn();
 
     throwCaught();
