@@ -13,9 +13,6 @@ import {DebugProtocol} from 'vscode-debugprotocol';
 import {ILaunchRequestArgs, IAttachRequestArgs, ICommonRequestArgs} from './chromeDebugInterfaces';
 import * as utils from './utils';
 
-import * as os from 'os';
-import * as path from 'path';
-
 const DefaultWebSourceMapPathOverrides: ISourceMapPathOverrides = {
     'webpack:///./~/*': '${webRoot}/node_modules/*',
     'webpack:///./*': '${webRoot}/*',
@@ -64,7 +61,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
     public launch(args: ILaunchRequestArgs): Promise<void> {
         this._kha = args.kha;
         return super.launch(args).then(() => {
-            logger.log('Using Kha from ' + args.kha + '\n', true);
+            logger.log('Using Kha from ' + args.kha + '\n');
 
             let options = {
                 from: args.cwd,
@@ -103,9 +100,9 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 
             require(path.join(args.kha, 'Tools/khamake/out/main.js')).run(options, {
                 info: message => {
-                    logger.log(message, true);
+                    logger.log(message);
                 }, error: message => {
-                    logger.error(message, true);
+                    logger.error(message);
                 }
             }).then((value: string) => {
                 // Check exists?
@@ -119,7 +116,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
                 const kromArgs: string[] = [path.join(args.cwd, 'build', 'krom'), path.join(args.cwd, 'build', 'krom-resources'), '--debug', port.toString(), '--watch'];
 
                 logger.log(`spawn('${kromPath}', ${JSON.stringify(kromArgs) })`);
-                this._chromeProc = spawnChrome(kromPath, kromArgs, !!args.runtimeExecutable);
+                this._chromeProc = this.spawnChrome(kromPath, kromArgs, !!args.runtimeExecutable);
                 this._chromeProc.on('error', (err) => {
                     const errMsg = 'Krom error: ' + err;
                     logger.error(errMsg);
@@ -130,9 +127,9 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
                     resolve();
                 });*/
                 return args.noDebug ? undefined :
-                    this.doAttach(port, 'http://krom', args.address, args.timeout, undefined, args.extraCRDPChannelPort);
+                    this.doAttach(port, 'http://krom', args.address, args.timeout);
             }, (reason) => {
-                logger.error('Launch canceled.', true);
+                logger.error('Launch canceled.');
                 require(path.join(this._kha, 'Tools/khamake/out/main.js')).close();
                 return new Promise<void>((resolve, reject) => {
                     reject({id: Math.floor(Math.random() * 100000), format: 'Compilation failed.'});
@@ -163,7 +160,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
     }
 
     protected doAttach(port: number, targetUrl?: string, address?: string, timeout?: number, websocketUrl?: string, extraCRDPChannelPort?: number): Promise<void> {
-        return super.doAttach(port, targetUrl, address, timeout, websocketUrl, extraCRDPChannelPort).then(() => {
+        return super.doAttach(port, targetUrl, address, timeout, websocketUrl).then(() => {
             // this.runScript();
             this.chrome.Log.onEntryAdded(params => this.onEntryAdded(params));
             // this.chrome.Log.enable();
@@ -175,7 +172,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
     }
 
     protected onEntryAdded(event: Crdp.Log.EntryAddedEvent): void {
-        logger.log(event.entry.text, true);
+        logger.log(event.entry.text);
     }
 
     protected onPaused(notification: Crdp.Debugger.PausedEvent, expectingStopReason?: stoppedEvent.ReasonType): void {
