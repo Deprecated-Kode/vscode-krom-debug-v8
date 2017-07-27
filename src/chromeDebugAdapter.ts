@@ -159,11 +159,11 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
         super.commonArgs(args);
     }
 
-    protected doAttach(port: number, targetUrl?: string, address?: string, timeout?: number, websocketUrl?: string, extraCRDPChannelPort?: number): Promise<void> {
-        return super.doAttach(port, targetUrl, address, timeout, websocketUrl).then(() => {
-            // this.runScript();
+    protected doAttach(port: number, targetUrl?: string, address?: string, timeout?: number): Promise<void> {
+        return super.doAttach(port, targetUrl, address, timeout).then(() => {
+
             this.chrome.Log.onEntryAdded(params => this.onEntryAdded(params));
-            // this.chrome.Log.enable();
+
         });
     }
 
@@ -217,13 +217,6 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
         require(path.join(this._kha, 'Tools/khamake/out/main.js')).close();
 
         this._chromeProc = null;
-    }
-
-    public runScript(): void {
-        let promise = this.chrome.Runtime.compileScript({expression: 'let i = 4;\n while (true) {\n	let a = 3;\n	++a;\n	++i;\n }\n', sourceURL: 'test.js', persistScript: true, executionContextId: 1});
-        promise.then(response => {
-            this.chrome.Runtime.runScript({scriptId: response.scriptId, executionContextId: 1});
-        });
     }
 
     /**
