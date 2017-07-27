@@ -20,7 +20,8 @@ const DefaultWebSourceMapPathOverrides: ISourceMapPathOverrides = {
     'webpack:///./~/*': '${webRoot}/node_modules/*',
     'webpack:///./*': '${webRoot}/*',
     'webpack:///*': '*',
-    'meteor://💻app/*': '${webRoot}/*',
+    'webpack:///src/*': '${webRoot}/*',
+    'meteor://💻app/*': '${webRoot}/*'
 };
 
 function osDir(): string {
@@ -129,7 +130,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
                     resolve();
                 });*/
                 return args.noDebug ? undefined :
-                    this.doAttach(port, 'http://krom', args.address, args.timeout);
+                    this.doAttach(port, 'http://krom', args.address, args.timeout, undefined, args.extraCRDPChannelPort);
             }, (reason) => {
                 logger.error('Launch canceled.', true);
                 require(path.join(this._kha, 'Tools/khamake/out/main.js')).close();
@@ -161,8 +162,8 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
         super.commonArgs(args);
     }
 
-    protected doAttach(port: number, targetUrl?: string, address?: string, timeout?: number): Promise<void> {
-        return super.doAttach(port, targetUrl, address, timeout).then(() => {
+    protected doAttach(port: number, targetUrl?: string, address?: string, timeout?: number, websocketUrl?: string, extraCRDPChannelPort?: number): Promise<void> {
+        return super.doAttach(port, targetUrl, address, timeout, websocketUrl, extraCRDPChannelPort).then(() => {
             // this.runScript();
             this.chrome.Log.onEntryAdded(params => this.onEntryAdded(params));
             // this.chrome.Log.enable();

@@ -1,7 +1,7 @@
 {
   "name": "debugger-for-krom",
   "displayName": "Debugger for Krom",
-  "version": "3.0.1",
+  "version": "3.1.6",
   "icon": "images/icon.png",
   "description": "Debug your JavaScript code in Krom.",
   "author": {
@@ -21,8 +21,8 @@
   ],
   "license": "SEE LICENSE IN LICENSE.txt",
   "dependencies": {
-    "vscode-chrome-debug-core": "3.15.0",
-    "vscode-debugadapter": "1.19.0-pre.0"
+    "vscode-chrome-debug-core": "3.16.0",
+    "vscode-debugadapter": "1.19.0"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.35",
@@ -40,11 +40,11 @@
     "ts-loader": "^1.0.0",
     "tslint": "^3.15.1",
     "typemoq": "^0.3.3",
-    "typescript": "^2.2.1",
+    "typescript": "^2.4.1",
     "vscode": "^1.0.3",
     "vscode-chrome-debug-core-testsupport": "^3.14.5",
-    "vscode-debugadapter-testsupport": "^1.18.1",
-    "vscode-debugprotocol": "^1.18.0-pre.2",
+    "vscode-debugadapter-testsupport": "1.19.0",
+    "vscode-debugprotocol": "1.19.0",
     "webpack": "^2.2.0-rc.1",
     "webpack-fail-plugin": "^1.0.5"
   },
@@ -93,7 +93,12 @@
         "program": "./out/chromeDebug.js",
         "runtime": "node",
         "aiKey": "AIF-d9b70cd4-b9f9-4d70-929b-a071c400b217",
-        "languages": [ "javascript", "typescript", "javascriptreact", "typescriptreact" ],
+        "languages": [
+          "javascript",
+          "typescript",
+          "javascriptreact",
+          "typescriptreact"
+        ],
         "startSessionCommand": "extension.chrome-debug.startSession",
         "variables": {
           "FindKha": "kha.findKha",
@@ -211,14 +216,22 @@
                 "description": "When 'true', the debugger will log tracing info to a file. When 'verbose', it will also show logs in the console."
               },
               "userDataDir": {
-                "type": ["string", "boolean"],
+                "type": [
+                  "string",
+                  "boolean"
+                ],
                 "description": "By default, Chrome is launched with a separate user profile in a temp folder. Use this option to override it. Set to false to launch with your default user profile.",
                 "default": ""
               },
               "sourceMapPathOverrides": {
                 "type": "object",
                 "description": "A set of mappings for rewriting the locations of source files from what the sourcemap says, to their locations on disk. See README for details.",
-                "default": {}
+                "default": {
+                  "webpack:///*": "*",
+                  "webpack:///./*": "${webRoot}/*",
+                  "webpack:///src/*": "${webRoot}/*",
+                  "webpack:///./~/*": "${webRoot}/node_modules/*"
+                }
               },
               "smartStep": {
                 "type": "boolean",

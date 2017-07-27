@@ -1,6 +1,40 @@
+## 3.1.6
+* Support `console.dir` and other missing `console` APIs - [Microsoft/vscode#29602](https://github.com/Microsoft/vscode/issues/29602)
+* Resolve longer `pathMapping` mappings before resolving shorter ones - [#444](https://github.com/microsoft/vscode-chrome-debug/issues/444)
+
+## 3.1.5
+* Fix evaluating object literals in the console - [Microsoft/vscode-node-debug2#104](https://github.com/Microsoft/vscode-node-debug2/issues/104)
+* Fix error callstacks in console sometimes not being sourcemapped - [Microsoft/vscode-chrome-debug-core#212](https://github.com/microsoft/vscode-chrome-debug-core/issues/212)
+
+## 3.1.4
+* Fix breakpoints not binding in apps built with Angular 1.1.1 (or any other app with a particular webpack config) - [Microsoft/vscode#28730](https://github.com/Microsoft/vscode/issues/28730)
+* Restore ability to create a launch.json with the default configs when pressing F5, and one is not already present.
+
+## 3.1.3
+* Fix longstanding sourcemap location mapping error - [#112](https://github.com/Microsoft/vscode-chrome-debug-core/issues/112)
+* Add existing default values to the `sourceMapPathOverrides` launch config setting
+
+## 3.1.2
+* Fix first frame appearing twice (in VS Code 1.13) and fix callstack paging - [Microsoft/vscode#25594](https://github.com/Microsoft/vscode/issues/25594)
+* Enhance path matching by accepting partial paths in `pathMapping` - thanks to [llgcode](https://github.com/llgcode) for the PR! - [Microsoft/vscode-chrome-debug-core#202](https://github.com/Microsoft/vscode-chrome-debug-core/pull/202)
+
+## 3.1.1
+* Fix "extension.chrome-debug.startSession not found" error due to bad publish
+
+## 3.1.0
+* Implement column breakpoints (with shift+F9) for recent Chrome versions - [Microsoft/vscode-chrome-debug-core#144](https://github.com/Microsoft/vscode-chrome-debug-core/issues/144)
+* Show a quickpick with available tabs when there are multiple - [#280](https://github.com/Microsoft/vscode-chrome-debug/issues/280)
+* Add `webpack:///./~/` sourcemap mapping by default - [#401](https://github.com/Microsoft/vscode-chrome-debug/issues/401)
+* Add `webpack:///src/*` sourcemap mapping for create-react-app by default - [#315](https://github.com/Microsoft/vscode-chrome-debug/issues/315)
+* Show exception widget for breaking on promise rejection - [Microsoft/vscode#21929](https://github.com/Microsoft/vscode/issues/21929)
+* Completely fix showing empty property names as "" - [Microsoft/vscode#24143](https://github.com/Microsoft/vscode/issues/24143)
+* Fix "Open or close parenthesis in file path prevents debugger from discovering the target" - [#373](https://github.com/Microsoft/vscode-chrome-debug/issues/373)
+* Remove "unimplemented console API" warning
+* Specify languages for creating a launch config when none is set up - [#334](https://github.com/Microsoft/vscode-chrome-debug/issues/334)
+
 ## 3.0.1
-* Fix "Windows - Electron app fails to start after upgrading to 3.0.0" [#407](https://github.com/Microsoft/vscode-chrome-debug/issues/407)
-  * On Windows, the code to prevent Chrome from closing when opening Chrome Devtools [#116](https://github.com/microsoft/vscode-chrome-debug/issues/116) is now not enabled when specifying a runtimeExecutable, until I find a better solution.
+* Fix "Windows - Electron app fails to start after upgrading to 3.0.0" - [#407](https://github.com/Microsoft/vscode-chrome-debug/issues/407)
+  * On Windows, the code to prevent Chrome from closing when opening Chrome Devtools - [#116](https://github.com/microsoft/vscode-chrome-debug/issues/116) is now not enabled when specifying a runtimeExecutable, until I find a better solution.
 
 ## 3.0.0
 * Enable userDataDir by default - [#210](https://github.com/microsoft/vscode-chrome-debug/issues/210)

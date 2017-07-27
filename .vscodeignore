@@ -13,8 +13,8 @@ tsd.json
 tslint.json
 vscode-chrome-debug.txt
 webpack.config.js
+images/demo.gif
 
-out/src/**
 out/test/**
 
 node_modules/.bin/**
