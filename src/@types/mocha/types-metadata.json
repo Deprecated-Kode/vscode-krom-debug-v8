@@ -1,0 +1,42 @@
+{
+    "authors": "Kazi Manzur Rashid <https://github.com/kazimanzurrashid/>, otiai10 <https://github.com/otiai10>, jt000 <https://github.com/jt000>, Vadim Macagon <https://github.com/enlight>",
+    "libraryDependencies": [],
+    "moduleDependencies": [],
+    "libraryMajorVersion": 2,
+    "libraryMinorVersion": 2,
+    "typeScriptVersion": "2.0",
+    "libraryName": "mocha",
+    "typingsPackageName": "mocha",
+    "projectName": "http://mochajs.org/",
+    "sourceRepoURL": "https://www.github.com/DefinitelyTyped/DefinitelyTyped",
+    "sourceBranch": "master",
+    "globals": [
+        "Mocha",
+        "after",
+        "afterEach",
+        "before",
+        "beforeEach",
+        "context",
+        "describe",
+        "it",
+        "mocha",
+        "run",
+        "setup",
+        "specify",
+        "suite",
+        "suiteSetup",
+        "suiteTeardown",
+        "teardown",
+        "test",
+        "xdescribe",
+        "xit"
+    ],
+    "declaredModules": [
+        "mocha"
+    ],
+    "files": [
+        "index.d.ts"
+    ],
+    "hasPackageJson": false,
+    "contentHash": "31d854969796077894d8ec0c19acfb190f4165dc8dd8457698d8f9fb2bc975c5"
+}

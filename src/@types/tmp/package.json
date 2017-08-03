@@ -1,0 +1,47 @@
+{
+  "_args": [
+    [
+      "@types/tmp@https://registry.npmjs.org/@types/tmp/-/tmp-0.0.32.tgz",
+      "C:\\Users\\Robert\\Projekte\\KodeStudio\\extensions\\krom-debug"
+    ]
+  ],
+  "_from": "@types/tmp@https://registry.npmjs.org/@types/tmp/-/tmp-0.0.32.tgz",
+  "_id": "@types/tmp@0.0.32",
+  "_inBundle": false,
+  "_integrity": "sha1-DTyzECL4Qn6ljACK8yuA2hJspOM=",
+  "_location": "/@types/tmp",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "remote",
+    "raw": "@types/tmp@https://registry.npmjs.org/@types/tmp/-/tmp-0.0.32.tgz",
+    "name": "@types/tmp",
+    "escapedName": "@types%2ftmp",
+    "scope": "@types",
+    "rawSpec": "https://registry.npmjs.org/@types/tmp/-/tmp-0.0.32.tgz",
+    "saveSpec": "https://registry.npmjs.org/@types/tmp/-/tmp-0.0.32.tgz",
+    "fetchSpec": "https://registry.npmjs.org/@types/tmp/-/tmp-0.0.32.tgz"
+  },
+  "_requiredBy": [
+    "#DEV:/"
+  ],
+  "_spec": "https://registry.npmjs.org/@types/tmp/-/tmp-0.0.32.tgz",
+  "_where": "C:\\Users\\Robert\\Projekte\\KodeStudio\\extensions\\krom-debug",
+  "author": {
+    "name": "Jared Klopper",
+    "email": "https://github.com/optical"
+  },
+  "dependencies": {},
+  "description": "TypeScript definitions for tmp",
+  "license": "MIT",
+  "main": "",
+  "name": "@types/tmp",
+  "peerDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://www.github.com/DefinitelyTyped/DefinitelyTyped.git"
+  },
+  "scripts": {},
+  "typesPublisherContentHash": "8dee398f279b4d3aa3d8d05535a4ce35f6de1acdf0106499b11fecb67610a7cc",
+  "typings": "index.d.ts",
+  "version": "https://registry.npmjs.org/@types/tmp/-/tmp-0.0.32.tgz"
+}

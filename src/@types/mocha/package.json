@@ -1,0 +1,47 @@
+{
+  "_args": [
+    [
+      "@types/mocha@https://registry.npmjs.org/@types/mocha/-/mocha-2.2.35.tgz",
+      "C:\\Users\\Robert\\Projekte\\KodeStudio\\extensions\\krom-debug"
+    ]
+  ],
+  "_from": "@types/mocha@https://registry.npmjs.org/@types/mocha/-/mocha-2.2.35.tgz",
+  "_id": "@types/mocha@2.2.35",
+  "_inBundle": false,
+  "_integrity": "sha1-3TFQtipt5zNoEJMIUVw6qG+B8ew=",
+  "_location": "/@types/mocha",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "remote",
+    "raw": "@types/mocha@https://registry.npmjs.org/@types/mocha/-/mocha-2.2.35.tgz",
+    "name": "@types/mocha",
+    "escapedName": "@types%2fmocha",
+    "scope": "@types",
+    "rawSpec": "https://registry.npmjs.org/@types/mocha/-/mocha-2.2.35.tgz",
+    "saveSpec": "https://registry.npmjs.org/@types/mocha/-/mocha-2.2.35.tgz",
+    "fetchSpec": "https://registry.npmjs.org/@types/mocha/-/mocha-2.2.35.tgz"
+  },
+  "_requiredBy": [
+    "#DEV:/"
+  ],
+  "_spec": "https://registry.npmjs.org/@types/mocha/-/mocha-2.2.35.tgz",
+  "_where": "C:\\Users\\Robert\\Projekte\\KodeStudio\\extensions\\krom-debug",
+  "author": {
+    "name": "Kazi Manzur Rashid",
+    "email": "https://github.com/kazimanzurrashid/"
+  },
+  "dependencies": {},
+  "description": "TypeScript definitions for mocha",
+  "license": "MIT",
+  "main": "",
+  "name": "@types/mocha",
+  "peerDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://www.github.com/DefinitelyTyped/DefinitelyTyped.git"
+  },
+  "scripts": {},
+  "typeScriptVersion": "2.0",
+  "typesPublisherContentHash": "31d854969796077894d8ec0c19acfb190f4165dc8dd8457698d8f9fb2bc975c5",
+  "version": "https://registry.npmjs.org/@types/mocha/-/mocha-2.2.35.tgz"
+}
