@@ -8,8 +8,8 @@ import * as Core from 'vscode-chrome-debug-core';
 import {targetFilter} from './utils';
 
 export function activate(context: vscode.ExtensionContext) {
-    context.subscriptions.push(vscode.commands.registerCommand('extension.chrome-debug.toggleSkippingFile', toggleSkippingFile));
-    context.subscriptions.push(vscode.commands.registerCommand('extension.chrome-debug.startSession', startSession));
+    context.subscriptions.push(vscode.commands.registerCommand('extension.krom-debug.toggleSkippingFile', toggleSkippingFile));
+    context.subscriptions.push(vscode.commands.registerCommand('extension.krom-debug.startSession', startSession));
 }
 
 export function deactivate() {
