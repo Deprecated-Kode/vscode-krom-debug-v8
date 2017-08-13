@@ -116,7 +116,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
                 const port = args.port || Math.floor((Math.random() * 10000) + 10000);
                 const kromArgs: string[] = [path.join(args.cwd, 'build', 'krom'), path.join(args.cwd, 'build', 'krom-resources'), '--debug', port.toString(), '--watch'];
 
-                logger.log(`spawn('${kromPath}', ${JSON.stringify(kromArgs) })`);
+                // logger.log(`spawn('${kromPath}', ${JSON.stringify(kromArgs) })`);
                 this._chromeProc = this.spawnChrome(kromPath, kromArgs, true);
                 this._chromeProc.on('error', (err) => {
                     const errMsg = 'Krom error: ' + err;
@@ -124,20 +124,20 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
                     this.terminateSession(errMsg);
                 });
 
-                logger.setup(Logger.LogLevel.Warn, false);
+                // logger.setup(Logger.LogLevel.Warn, false);
 
-                /*return new Promise<void>((resolve, reject) => {
-                    resolve();
-                });*/
+                // return new Promise<void>((resolve, reject) => {
+                //     resolve();
+                // });
                 return args.noDebug ? undefined :
                     this.doAttach(port, 'http://krom', args.address, args.timeout);
             }, (reason) => {
                 logger.setup(Logger.LogLevel.Warn, false);
                 logger.error('Launch canceled.');
                 require(path.join(this._kha, 'Tools/khamake/out/main.js')).close();
-                return new Promise<void>((resolve, reject) => {
-                    reject({id: Math.floor(Math.random() * 100000), format: 'Compilation failed.'});
-                });
+                this.doAttach(Math.floor((Math.random() * 10000) + 10000), 'http://krom', args.address, args.timeout);
+                super.disconnect();
+                return undefined;
             });
         });
     }
@@ -157,7 +157,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
         }
 
         args.sourceMaps = typeof args.sourceMaps === 'undefined' || args.sourceMaps;
-        args.sourceMapPathOverrides = getSourceMapPathOverrides(args.webRoot, args.sourceMapPathOverrides);
+        // args.sourceMapPathOverrides = getSourceMapPathOverrides(args.webRoot, args.sourceMapPathOverrides);
         args.skipFileRegExps = ['^chrome-extension:.*'];
 
         super.commonArgs(args);
@@ -256,7 +256,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
 
             return chromeProc;
         } else {
-            logger.log(`spawn('${chromePath}', ${JSON.stringify(chromeArgs) })`);
+            // logger.log(`spawn('${chromePath}', ${JSON.stringify(chromeArgs) })`);
             const chromeProc = spawn(chromePath, chromeArgs, {
                 detached: true,
                 stdio: ['ignore'],
