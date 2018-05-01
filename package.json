@@ -1,18 +1,14 @@
 {
   "name": "debugger-for-krom",
   "displayName": "Debugger for Krom",
-  "version": "3.1.6",
+  "version": "17.9.1",
   "icon": "images/icon.png",
   "description": "Debug your JavaScript code in Krom.",
-  "author": {
-    "name": "Microsoft Corporation"
-  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Microsoft/vscode-chrome-debug"
+    "url": "https://github.com/Kode/vscode-krom-debug"
   },
-  "publisher": "msjsdiag",
-  "bugs": "https://github.com/microsoft/vscode-chrome-debug/issues",
+  "publisher": "robdangerous",
   "engines": {
     "vscode": "^1.8.0"
   },
@@ -54,7 +50,6 @@
     "test": "mocha --timeout 20000 -s 2000 -u tdd --colors \"./out/test/*.test.js\"",
     "intTest": "mocha --timeout 20000 -s 3500 -u tdd --colors --reporter node_modules/vscode-chrome-debug-core-testsupport/out/loggingReporter.js ./out/test/int/*.test.js",
     "lint": "tslint -t verbose \"src/**/*.ts\"",
-    "vscode:prepublish": "gulp verify-no-linked-modules",
     "postinstall": "node ./node_modules/vscode/bin/install"
   },
   "contributes": {
@@ -378,7 +373,7 @@
     ]
   },
   "extensionDependencies": [
-    "ktx.kha",
-    "ktx.krom"
+    "robdangerous.kha",
+    "robdangerous.krom"
   ]
 }
