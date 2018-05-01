@@ -1,5 +1,5 @@
 {
-  "name": "debugger-for-krom",
+  "name": "krom-debug",
   "displayName": "Debugger for Krom",
   "version": "17.9.1",
   "icon": "images/icon.png",
