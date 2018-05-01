@@ -8,7 +8,7 @@
     "type": "git",
     "url": "https://github.com/Kode/vscode-krom-debug"
   },
-  "publisher": "robdangerous",
+  "publisher": "kodetech",
   "engines": {
     "vscode": "^1.8.0"
   },
@@ -16,42 +16,11 @@
     "Debuggers"
   ],
   "license": "SEE LICENSE IN LICENSE.txt",
-  "dependencies": {
-    "vscode-chrome-debug-core": "3.15.9",
-    "vscode-debugadapter": "1.19.0"
-  },
-  "devDependencies": {
-    "@types/mocha": "^2.2.35",
-    "@types/mockery": "^1.4.29",
-    "@types/node": "^6.0.41",
-    "@types/source-map": "^0.1.27",
-    "@types/tmp": "0.0.32",
-    "glob": "^7.1.1",
-    "http-server": "^0.9.0",
-    "vscode": "^1.0.3",
-    "vscode-chrome-debug-core-testsupport": "^3.14.5",
-    "vscode-debugadapter-testsupport": "1.19.0",
-    "vscode-debugprotocol": "1.19.0"
-  },
   "main": "./out/extension",
   "activationEvents": [
     "onCommand:extension.krom-debug.startSession",
     "onCommand:extension.krom-debug.toggleSkippingFile"
   ],
-  "scripts": {
-    "build": "concurrently \"npm run build:debugadapter\" \"npm run build:test\" \"npm run build:outOfBundle\"",
-    "build:debugadapter": "webpack",
-    "build:test": "tsc -p test/tsconfig.json",
-    "build:outOfBundle": "tsc -p outOfBundle/tsconfig.json",
-    "watch": "concurrently \"npm run watch:debugadapter\" \"npm run watch:test\" \"npm run watch:outOfBundle\"",
-    "watch:debugadapter": "webpack -w",
-    "watch:test": "tsc -p test/tsconfig.json -w",
-    "watch:outOfBundle": "tsc -p outOfBundle/tsconfig.json -w",
-    "test": "mocha --timeout 20000 -s 2000 -u tdd --colors \"./out/test/*.test.js\"",
-    "intTest": "mocha --timeout 20000 -s 3500 -u tdd --colors --reporter node_modules/vscode-chrome-debug-core-testsupport/out/loggingReporter.js ./out/test/int/*.test.js",
-    "lint": "tslint -t verbose \"src/**/*.ts\"",
-    "postinstall": "node ./node_modules/vscode/bin/install"
-  },
   "contributes": {
     "breakpoints": [
       {
