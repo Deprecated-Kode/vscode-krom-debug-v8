@@ -11,21 +11,19 @@ import * as nls from 'vscode-nls';
 const localize = nls.loadMessageBundle();
 
 export function activate(context: vscode.ExtensionContext) {
-    context.subscriptions.push(vscode.commands.registerCommand('extension.chrome-debug.toggleSkippingFile', toggleSkippingFile));
-    context.subscriptions.push(vscode.commands.registerCommand('extension.chrome-debug.toggleSmartStep', toggleSmartStep));
+    context.subscriptions.push(vscode.commands.registerCommand('extension.krom-debug.toggleSkippingFile', toggleSkippingFile));
+    context.subscriptions.push(vscode.commands.registerCommand('extension.krom-debug.toggleSmartStep', toggleSmartStep));
 
-    context.subscriptions.push(vscode.debug.registerDebugConfigurationProvider('chrome', new ChromeConfigurationProvider()));
+    context.subscriptions.push(vscode.debug.registerDebugConfigurationProvider('krom', new ChromeConfigurationProvider()));
 }
 
 export function deactivate() {
 }
 
 const DEFAULT_CONFIG = {
-    type: 'chrome',
+    type: 'krom',
     request: 'launch',
-    name: localize('chrome.launch.name', 'Launch Chrome against localhost'),
-    url: 'http://localhost:8080',
-    webRoot: '${workspaceFolder}'
+    name: localize('chrome.launch.name', 'Launch Krom'),
 };
 
 export class ChromeConfigurationProvider implements vscode.DebugConfigurationProvider {
@@ -66,6 +64,7 @@ export class ChromeConfigurationProvider implements vscode.DebugConfigurationPro
             }
         }
 
+        config.kromDir = findKrom();
         return config;
     }
 }

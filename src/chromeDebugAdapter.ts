@@ -69,13 +69,13 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
                 runtimeExecutable = re;
             }
 
-            runtimeExecutable = runtimeExecutable || utils.getBrowserPath();
+            runtimeExecutable = runtimeExecutable || utils.getKromPath();
             if (!runtimeExecutable) {
                 return coreUtils.errP(localize('attribute.chrome.missing', "Can't find Chrome - install it or set the \"runtimeExecutable\" field in the launch config."));
             }
 
             // Start with remote debugging enabled
-            const port = args.port || 9222;
+            const port = args.port || Math.floor((Math.random() * 10000) + 10000);
             const chromeArgs: string[] = [];
             const chromeEnv: {[key: string]: string} = args.env || null;
             const chromeWorkingDir: string = args.cwd || null;
@@ -93,8 +93,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
             // Set a default userDataDir, if the user opted in explicitly with 'true' or if args.userDataDir is not set (only when runtimeExecutable is not set).
             // Can't set it automatically with runtimeExecutable because it may not be desired with Electron, other runtimes, random scripts.
             if (
-                args.userDataDir === true ||
-                (typeof args.userDataDir === 'undefined' && !args.runtimeExecutable)
+                args.userDataDir === true
             ) {
                 args.userDataDir = path.join(os.tmpdir(), `vscode-chrome-debug-userdatadir_${port}`);
             }
@@ -125,11 +124,11 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
                 chromeArgs.push(launchUrl);
             }
 
-            this._chromeProc = await this.spawnChrome(runtimeExecutable, chromeArgs, chromeEnv, chromeWorkingDir, !!args.runtimeExecutable,
+            this._chromeProc = await this.spawnChrome(runtimeExecutable, chromeArgs, chromeEnv, chromeWorkingDir, true,
                  args.shouldLaunchChromeUnelevated);
             if (this._chromeProc) {
                 this._chromeProc.on('error', (err) => {
-                    const errMsg = 'Chrome error: ' + err;
+                    const errMsg = 'Krom error: ' + err;
                     logger.error(errMsg);
                     this.terminateSession(errMsg);
                 });
