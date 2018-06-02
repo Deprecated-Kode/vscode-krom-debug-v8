@@ -69,7 +69,7 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
                 runtimeExecutable = re;
             }
 
-            runtimeExecutable = runtimeExecutable || utils.getKromPath();
+            runtimeExecutable = runtimeExecutable || utils.getKromPath(args.kromDir);
             if (!runtimeExecutable) {
                 return coreUtils.errP(localize('attribute.chrome.missing', "Can't find Chrome - install it or set the \"runtimeExecutable\" field in the launch config."));
             }

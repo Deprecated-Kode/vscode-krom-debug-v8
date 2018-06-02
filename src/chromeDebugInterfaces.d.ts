@@ -25,6 +25,7 @@ export interface ILaunchRequestArgs extends Core.ILaunchRequestArgs, ICommonRequ
     breakOnLoad?: boolean;
     _clientOverlayPausedMessage?: string;
     shouldLaunchChromeUnelevated?: boolean;
+    kromDir?: string;
 }
 
 export interface IAttachRequestArgs extends Core.IAttachRequestArgs, ICommonRequestArgs {

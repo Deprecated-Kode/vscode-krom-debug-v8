@@ -64,7 +64,7 @@ export class ChromeConfigurationProvider implements vscode.DebugConfigurationPro
             }
         }
 
-        config.kromDir = findKrom();
+        config.kromDir = vscode.extensions.getExtension('kodetech.krom').exports.findKrom();
         return config;
     }
 }

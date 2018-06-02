@@ -1,18 +1,14 @@
 {
-  "name": "debugger-for-chrome",
-  "displayName": "Debugger for Chrome",
-  "version": "4.5.0",
+  "name": "krom-debug",
+  "displayName": "Debugger for Krom",
+  "version": "18.6.0",
   "icon": "images/icon.png",
-  "description": "%extension.description%",
-  "author": {
-    "name": "Microsoft Corporation"
-  },
+  "description": "Debug your JavaScript code in Krom.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Microsoft/vscode-chrome-debug"
+    "url": "https://github.com/Kode/vscode-krom-debug"
   },
-  "publisher": "msjsdiag",
-  "bugs": "https://github.com/microsoft/vscode-chrome-debug/issues",
+  "publisher": "kodetech",
   "engines": {
     "vscode": "^1.17.0"
   },
@@ -63,8 +59,8 @@
   "main": "./out/src/extension",
   "activationEvents": [
     "onDebugInitialConfigurations",
-    "onDebugResolve:chrome",
-    "onCommand:extension.chrome-debug.toggleSkippingFile"
+    "onDebugResolve:krom",
+    "onCommand:extension.krom-debug.toggleSkippingFile"
   ],
   "scripts": {
     "build": "gulp build",
@@ -93,12 +89,15 @@
       },
       {
         "language": "fsharp"
+      },
+      {
+        "language": "haxe"
       }
     ],
     "debuggers": [
       {
-        "type": "chrome",
-        "label": "Chrome",
+        "type": "krom",
+        "label": "Krom",
         "program": "./out/src/chromeDebug.js",
         "runtime": "node",
         "aiKey": "AIF-d9b70cd4-b9f9-4d70-929b-a071c400b217",
@@ -394,24 +393,24 @@
     "menus": {
       "debug/callstack/context": [
         {
-          "command": "extension.chrome-debug.toggleSkippingFile",
+          "command": "extension.krom-debug.toggleSkippingFile",
           "group": "navigation",
-          "when": "inDebugMode && debugType == 'chrome'"
+          "when": "inDebugMode && debugType == 'krom'"
         },
         {
-          "command": "extension.chrome-debug.toggleSmartStep",
+          "command": "extension.krom-debug.toggleSmartStep",
           "group": "navigation",
-          "when": "inDebugMode && debugType == 'chrome'"
+          "when": "inDebugMode && debugType == 'krom'"
         }
       ]
     },
     "commands": [
       {
-        "command": "extension.chrome-debug.toggleSkippingFile",
+        "command": "extension.krom-debug.toggleSkippingFile",
         "title": "%chrome.toggleSkipping.title%"
       },
       {
-        "command": "extension.chrome-debug.toggleSmartStep",
+        "command": "extension.krom-debug.toggleSmartStep",
         "title": "%chrome.toggleSmartStep.title%"
       }
     ],
@@ -420,8 +419,11 @@
         "command": "extension.node-debug.pickLoadedScript",
         "key": "ctrl+f4",
         "mac": "cmd+f4",
-        "when": "debugType == 'chrome'"
+        "when": "debugType == 'krom'"
       }
     ]
-  }
+  },
+  "extensionDependencies": [
+    "kodetech.krom"
+  ]
 }

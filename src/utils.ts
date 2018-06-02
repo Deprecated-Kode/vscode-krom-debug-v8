@@ -14,23 +14,8 @@ const DEFAULT_CHROME_PATH = {
     WINx86: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
 };
 
-export function getBrowserPath(): string {
-    const platform = coreUtils.getPlatform();
-    if (platform === coreUtils.Platform.OSX) {
-        return coreUtils.existsSync(DEFAULT_CHROME_PATH.OSX) ? DEFAULT_CHROME_PATH.OSX : null;
-    } else if (platform === coreUtils.Platform.Windows) {
-        if (coreUtils.existsSync(DEFAULT_CHROME_PATH.WINx86)) {
-            return DEFAULT_CHROME_PATH.WINx86;
-        } else if (coreUtils.existsSync(DEFAULT_CHROME_PATH.WIN)) {
-            return DEFAULT_CHROME_PATH.WIN;
-        } else if (coreUtils.existsSync(DEFAULT_CHROME_PATH.WIN_LOCALAPPDATA)) {
-            return DEFAULT_CHROME_PATH.WIN_LOCALAPPDATA;
-        } else {
-            return null;
-        }
-    } else {
-        return coreUtils.existsSync(DEFAULT_CHROME_PATH.LINUX) ? DEFAULT_CHROME_PATH.LINUX : null;
-    }
+export function getKromPath(kromDir: string): string {
+    return path.join(kromDir, 'win32', 'Krom.exe');
 }
 
 export class DebounceHelper {
