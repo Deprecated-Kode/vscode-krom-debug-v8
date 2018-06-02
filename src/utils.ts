@@ -15,7 +15,14 @@ const DEFAULT_CHROME_PATH = {
 };
 
 export function getKromPath(kromDir: string): string {
-    return path.join(kromDir, 'win32', 'Krom.exe');
+    const platform = coreUtils.getPlatform();
+    if (platform === coreUtils.Platform.OSX) {
+        return path.join(kromDir, 'macos', 'Krom.app', 'Contents', 'MacOS', 'Krom');
+    } else if (platform === coreUtils.Platform.Windows) {
+        return path.join(kromDir, 'win32', 'Krom.exe');
+    } else {
+        return path.join(kromDir, 'linux', 'Krom');
+    }
 }
 
 export class DebounceHelper {

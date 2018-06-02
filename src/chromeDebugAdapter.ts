@@ -80,8 +80,15 @@ export class ChromeDebugAdapter extends CoreDebugAdapter {
             const chromeEnv: {[key: string]: string} = args.env || null;
             const chromeWorkingDir: string = args.cwd || null;
 
+            chromeArgs.push(args.appDir);
+            if (args.resourcesDir) {
+                chromeArgs.push(args.resourcesDir);
+            }
+            // chromeArgs.push('--watch');
+
             if (!args.noDebug) {
-                chromeArgs.push('--remote-debugging-port=' + port);
+                chromeArgs.push('--debug' + port);
+                chromeArgs.push(port.toString());
             }
 
             // Also start with extra stuff disabled
